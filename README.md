@@ -7,7 +7,7 @@ Explorative Datenanalyse der Unfälle mit Fahrradbeteiligung auf Basis des Unfal
 Ziel ist es, Unfälle mit Fahrradbeteiligung in Deutschland zu untersuchen und Muster zu erkennen, die für die Verkehrssicherheit relevant sind. Folgende Fragen sollen beantwortet werden:
 
 1. **Zeitliche Entwicklung:** Wie hat sich die Zahl der Fahrradunfälle zwischen 2020 und 2025 entwickelt? In welchen Monaten, an welchen Wochentagen und zu welchen Tageszeiten passieren die meisten?
-2. **Räumliche Verteilung:** In welchen Bundesländern und Landkreisen gibt es die meisten Fahrradunfälle? Wo liegen Hotspots, und gibt es Regionen mit besonders hohem Anteil schwerer Unfälle?
+2. **Räumliche Verteilung** In welchen Bundesländern, Landkreisen und Gemeinden werden die meisten Fahrradunfälle registriert? Wo lassen sich geografische Häufungen von Fahrradunfällen erkennen, und gibt es Regionen mit besonders hohen Anteilen schwerer Fahrradunfälle?
 3. **Unfallschwere:** Wie verteilen sich Fahrradunfälle auf die Unfallkategorien? Unterscheidet sich die Schwere nach Tageszeit, Monat und Lichtverhältnissen sowie im Vergleich zu Unfällen ohne Fahrrad?
 4. **Unfallbedingungen:** Bei welchen Lichtverhältnissen, Unfalltypen, Unfallarten und Straßenzuständen passieren Fahrradunfälle am häufigsten?
 5. **Vergleich:** Welchen Anteil haben Fahrradunfälle an allen Unfällen mit Personenschaden, und wie unterscheiden sich ihre zeitlichen Muster von denen anderer Unfälle?
