@@ -8,10 +8,9 @@ Ziel ist es, Unfälle mit Fahrradbeteiligung in Deutschland zu untersuchen und M
 
 1. **Zeitliche Entwicklung:** Wie hat sich die Zahl der Fahrradunfälle zwischen 2020 und 2025 entwickelt? In welchen Monaten, an welchen Wochentagen und zu welchen Tageszeiten passieren die meisten?
 2. **Räumliche Verteilung** In welchen Bundesländern, Landkreisen und Gemeinden werden die meisten Fahrradunfälle registriert? Wo lassen sich geografische Häufungen von Fahrradunfällen erkennen, und gibt es Regionen mit besonders hohen Anteilen schwerer Fahrradunfälle?
-3. **Unfallschwere:** Wie verteilen sich Fahrradunfälle auf die Unfallkategorien? Unterscheidet sich die Schwere nach Tageszeit, Monat und Lichtverhältnissen sowie im Vergleich zu Unfällen ohne Fahrrad?
-4. **Unfallbedingungen:** Bei welchen Lichtverhältnissen, Unfalltypen, Unfallarten und Straßenzuständen passieren Fahrradunfälle am häufigsten?
-5. **Vergleich:** Welchen Anteil haben Fahrradunfälle an allen Unfällen mit Personenschaden, und wie unterscheiden sich ihre zeitlichen Muster von denen anderer Unfälle?
-6. **Modellierung:** Welche Faktoren erhöhen die Wahrscheinlichkeit, dass ein Fahrradunfall schwer endet? Zur Untersuchung wird eine logistische Regression eingesetzt.
+3. **Unfallschwere:** Wie verteilen sich Fahrradunfälle auf die Unfallkategorien? Unterscheidet sich die Schwere nach Tageszeit und Lichtverhältnissen?
+4. **Unfallbedingungen:** Wie verteilen sich Fahrradunfälle nach dem Straßenzustand? Welche   Unfalltypen treten bei Fahrradunfällen am häufigsten auf?
+5. **Modellierung:** 
 7. **Fazit:** Welche Erkenntnisse lassen sich daraus für die Verkehrssicherheit ableiten?
 
 ## Daten
