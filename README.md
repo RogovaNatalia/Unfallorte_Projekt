@@ -6,12 +6,12 @@ Explorative Datenanalyse der Unfälle mit Fahrradbeteiligung auf Basis des Unfal
 
 Ziel ist es, Unfälle mit Fahrradbeteiligung in Deutschland zu untersuchen und Muster zu erkennen, die für die Verkehrssicherheit relevant sind. Folgende Fragen sollen beantwortet werden:
 
-1. **Zeitliche Entwicklung:** Wie hat sich die Zahl der Fahrradunfälle zwischen 2020 und 2025 entwickelt? In welchen Monaten, an welchen Wochentagen und zu welchen Tageszeiten passieren die meisten?
-2. **Räumliche Verteilung** In welchen Bundesländern, Landkreisen und Gemeinden werden die meisten Fahrradunfälle registriert? Wo lassen sich geografische Häufungen von Fahrradunfällen erkennen, und gibt es Regionen mit besonders hohen Anteilen schwerer Fahrradunfälle?
-3. **Unfallschwere:** Wie verteilen sich Fahrradunfälle auf die Unfallkategorien? Unterscheidet sich die Schwere nach Tageszeit und Lichtverhältnissen?
-4. **Unfallbedingungen:** Wie verteilen sich Fahrradunfälle nach dem Straßenzustand? Welche   Unfalltypen treten bei Fahrradunfällen am häufigsten auf?
-5. **Modellierung:** 
-7. **Fazit:** Welche Erkenntnisse lassen sich daraus für die Verkehrssicherheit ableiten?
+1. **Zeitliche Entwicklung:** Wie hat sich die Zahl der Fahrradunfälle zwischen 2020 und 2025 entwickelt? In welchen Monaten, an welchen Wochentagen und zu welchen Tageszeiten werden die meisten Unfälle registriert?
+2. **Räumliche Verteilung** Wie verteilen sich die Unfälle auf Bundesländer, Landkreise und Gemeinden? Wo werden besonders viele Unfälle registriert, und wie unterscheidet sich der Anteil schwerer Unfälle zwischen den Regionen?
+3. **Unfallschwere:** Wie verteilen sich die Unfälle auf die Unfallkategorien? Unterscheidet sich der Anteil schwerer Unfälle nach Tageszeit und Lichtverhältnissen?
+4. **Unfallbedingungen:** Welche Straßenzustände und Unfalltypen treten häufig auf? Welche weiteren Verkehrsteilnehmer sind an den Unfällen beteiligt?
+5. **Modellierung:** Lässt sich anhand der bisherigen Entwicklung eine erste Prognose der Unfallzahlen für 2026 erstellen? Wie zuverlässig ist ein solches Modell im Vergleich zu einer einfachen Referenzprognose?
+7. **Fazit:** Welche Erkenntnisse lassen sich aus den Ergebnissen ableiten, und welche Einschränkungen müssen bei ihrer Interpretation berücksichtigt werden?
 
 ## Daten
 
@@ -53,6 +53,39 @@ Im Gegensatz zu den jährlichen Unfalldaten ist diese Referenzdatei im Repositor
 
 Bei der Zuordnung der Unfalldaten zu den Landkreisen konnten 63 von insgesamt 500.799 Datensätzen aufgrund eines im Verwaltungsverzeichnis nicht enthaltenen Gebietsschlüssels nicht zugeordnet werden. Dies entspricht etwa 0,013 % aller Datensätze. Die nicht zugeordneten Datensätze werden bei der Auswertung auf Kreisebene nicht berücksichtigt.
 
+### Definition schwerer Unfälle
+
+Für die Analyse werden Unfälle der Kategorien 1 und 2 als schwere Unfälle zusammengefasst:
+
+Kategorie 1: Unfall mit Getöteten
+Kategorie 2: Unfall mit Schwerverletzten
+
+Die entsprechende Variable schwer wird in der Datenaufbereitung erstellt und in den nachfolgenden Auswertungen verwendet.
+
+### Methodik
+
+Die Analyse wird mit Python und den Bibliotheken pandas und Matplotlib durchgeführt.
+
+Die Arbeitsschritte umfassen:
+
+- Einlesen und Zusammenführen der jährlichen Unfalldaten
+- Aufbereitung und Prüfung der Daten
+- Zuordnung der Unfälle zu Bundesländern, Landkreisen und Gemeinden
+- Deskriptive Analyse der zeitlichen und räumlichen Verteilung
+- Untersuchung der Unfallschwere und der Unfallbedingungen
+- Analyse der Beteiligung weiterer Verkehrsteilnehmer
+- Erstellung und Bewertung einer ersten Prognose für 2026
+
+Die Auswertungen zu den absoluten Unfallzahlen und zum Anteil schwerer Unfälle beantworten unterschiedliche Fragen. Absolute Zahlen zeigen, wo viele Unfälle registriert werden. Prozentuale Anteile beschreiben dagegen die Zusammensetzung der erfassten Unfälle.
+
+Bei Vergleichen zwischen Städten und Gemeinden werden, sofern Einwohnerzahlen einbezogen werden, auch Unfallzahlen je 100.000 Einwohner betrachtet. Diese Kennzahl berücksichtigt die Einwohnerzahl, ist jedoch keine direkte Messung des individuellen Fahrradrisikos, da beispielsweise die Zahl der Fahrradfahrten nicht berücksichtigt wird.
+
+Die Prognose für 2026 ist als explorative Schätzung zu verstehen. Sie stellt keine gesicherte Vorhersage dar.
+
+## Ergebnisse
+
+*Folgt nach Abschluss der Analyse.*
+
 ## Installation
 
 Die Python-Umgebung und die Projektabhängigkeiten werden mit [uv](https://docs.astral.sh/uv/) verwaltet.
@@ -81,8 +114,49 @@ Die Excel-Datei mit dem Verwaltungsverzeichnis ist bereits im Repository enthalt
 1. Das Projekt in Visual Studio Code öffnen.
 2. Die Datei `analyse.ipynb` öffnen.
 3. Die virtuelle Umgebung `.venv` als Python-Kernel auswählen.
-4. Die Zellen des Notebooks der Reihe nach von oben nach unten ausführen.
+4. Den Kernel neu starten und alle Zellen der Reihe nach von oben nach unten ausführen.
+5. Prüfen, ob alle Zellen ohne Fehler durchlaufen und die Diagramme korrekt erstellt werden.
 
-## Ergebnisse
+### Projektstruktur
 
-*Folgt nach Abschluss der Analyse.*
+```text
+Unfallorte_Projekt/
+├── data/
+│   ├── population/
+│   │   ├── 31122020_Auszug_GV.xlsx
+│   │   ├── 31122021_Auszug_GV.xlsx
+│   │   ├── 31122022_Auszug_GV.xlsx
+│   │   ├── 31122023_Auszug_GV.xlsx
+│   │   ├── 31122024_Auszug_GV.xlsx
+│   │   └── 31122025_Auszug_GV.xlsx
+│   ├── Unfallorte2020_LinRef.csv
+│   ├── Unfallorte_2021_LinRef.txt
+│   ├── Unfallorte2022_LinRef.csv
+│   ├── Unfallorte2023_LinRef.csv
+│   ├── Unfallorte2024_LinRef.csv
+│   ├── Unfallorte_2025_LR_BasisDLM.csv
+│   └── 20260131_Anschriften_der_Gemeinde_und_Stadtverwaltungen.xlsx
+├── analyse.ipynb
+├── pyproject.toml
+├── uv.lock
+├── .gitignore
+└── README.md
+```
+
+Die jährlichen Unfalldateien werden lokal im Ordner data/ abgelegt und nicht mit dem Repository versioniert.
+### Einschränkungen
+
+Der Unfallatlas enthält Unfälle mit Personenschaden, nicht alle Verkehrsunfälle.
+Die Anzahl registrierter Unfälle ist nicht gleichbedeutend mit dem individuellen Unfallrisiko.
+Einwohnerbezogene Kennzahlen berücksichtigen nicht, wie häufig oder wie weit Menschen Fahrrad fahren.
+Die Beteiligung weiterer Verkehrsteilnehmer kann sich zwischen den Kategorien überschneiden.
+Die Ergebnisse beschreiben beobachtete Zusammenhänge und belegen keine Kausalität.
+Die Prognose für 2026 ist vorläufig und aufgrund der begrenzten Datenbasis mit Unsicherheit verbunden.
+
+### Verwendete Technologien
+
+Python
+pandas
+Matplotlib
+Jupyter Notebook
+uv
