@@ -10,7 +10,7 @@ Ziel ist es, Unfälle mit Fahrradbeteiligung in Deutschland zu untersuchen und M
 2. **Räumliche Verteilung** Wie verteilen sich die Unfälle auf Bundesländer, Landkreise und Gemeinden? Wo werden besonders viele Unfälle registriert, und wie unterscheidet sich der Anteil schwerer Unfälle zwischen den Regionen?
 3. **Unfallschwere:** Wie verteilen sich die Unfälle auf die Unfallkategorien? Unterscheidet sich der Anteil schwerer Unfälle nach Tageszeit und Lichtverhältnissen?
 4. **Unfallbedingungen:** Welche Straßenzustände und Unfalltypen treten häufig auf? Welche weiteren Verkehrsteilnehmer sind an den Unfällen beteiligt?
-5. **Modellierung:** Lässt sich anhand der bisherigen Entwicklung eine erste Prognose der Unfallzahlen für 2026 erstellen? Wie zuverlässig ist ein solches Modell im Vergleich zu einer einfachen Referenzprognose?
+5. **Modellierung:** Lässt sich anhand der bisherigen Entwicklung eine erste Prognose der Unfallzahlen für 2026 erstellen?
 7. **Fazit:** Welche Erkenntnisse lassen sich aus den Ergebnissen ableiten, und welche Einschränkungen müssen bei ihrer Interpretation berücksichtigt werden?
 
 ## Daten
