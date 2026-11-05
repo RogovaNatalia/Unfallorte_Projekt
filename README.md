@@ -2,6 +2,8 @@
 
 Explorative Datenanalyse von Straßenverkehrsunfällen mit Fahrradbeteiligung auf Basis des Unfallatlas der Statistischen Ämter des Bundes und der Länder.
 
+**Präsentation der Ergebnisse:** [huggingface.co/spaces/kamelia17/fahrradunfaelle-2020-2025](https://huggingface.co/spaces/kamelia17/fahrradunfaelle-2020-2025)
+
 ## Aufgabenstellung
 
 Ziel ist es, Unfälle mit Fahrradbeteiligung in Deutschland zu untersuchen und Muster zu erkennen, die für die Verkehrssicherheit relevant sind. Im Mittelpunkt stehen folgende Fragen:
@@ -11,6 +13,7 @@ Ziel ist es, Unfälle mit Fahrradbeteiligung in Deutschland zu untersuchen und M
 3. **Unfallschwere:** Wie verteilen sich die Unfälle auf die Unfallkategorien? Unterscheidet sich der Anteil schwerer Unfälle nach Tageszeit und Lichtverhältnissen?
 4. **Unfallbedingungen:** Welche Straßenzustände und Unfalltypen treten häufig auf? Welche weiteren Verkehrsteilnehmer sind an den Unfällen beteiligt?
 5. **Modellierung:** Lässt sich anhand der bisherigen Entwicklung eine erste Prognose der Unfallzahlen für 2026 erstellen?
+6. **Zeitliche Verteilung der Prognose:** In welchen Monaten, an welchen Wochentagen und zu welchen Tageszeiten sind 2026 in den zehn größten Städten die meisten Unfälle zu erwarten?
 
 ## Daten
 
@@ -38,21 +41,21 @@ data/
 └── Unfallorte_2025_LR_BasisDLM.csv
 ```
 
-Die jährlichen Unfalldateien sind in `.gitignore` ausgeschlossen und werden nicht mit dem Repository versioniert.
+Die jährlichen Unfalldateien sind in `.gitignore` ausgeschlossen und werden nicht mit dem Repository versioniert. Beim Einlesen prüft das Notebook, ob alle Jahrgänge dieselben Spalten enthalten.
 
 ### Verwaltungsverzeichnis
 
-Für die räumliche Analyse auf Ebene der Landkreise und kreisfreien Städte wird zusätzlich folgende Excel-Datei verwendet:
+Für die räumliche Analyse auf Ebene der Landkreise, kreisfreien Städte und Gemeinden wird zusätzlich folgende Excel-Datei verwendet:
 
 `data/20260131_Anschriften_der_Gemeinde_und_Stadtverwaltungen.xlsx`
 
-Die Datei enthält das Verwaltungsverzeichnis mit Stand vom 31. Januar 2026. Sie wird verwendet, um Gebietsschlüssel den Namen der Landkreise und kreisfreien Städte zuzuordnen. Die Referenzdatei ist im Repository enthalten und muss nicht separat heruntergeladen werden.
+Die Datei enthält das Verwaltungsverzeichnis mit Stand vom 31. Januar 2026. Sie wird verwendet, um Gebietsschlüssel den Namen der Landkreise, kreisfreien Städte und Gemeinden zuzuordnen. Die Referenzdatei ist im Repository enthalten und muss nicht separat heruntergeladen werden.
 
-Bei der Zuordnung der Unfalldaten zu den Landkreisen konnten 63 von insgesamt 500.799 Datensätzen aufgrund eines im Verwaltungsverzeichnis nicht enthaltenen Gebietsschlüssels nicht zugeordnet werden. Dies entspricht etwa 0,013 % aller Datensätze. Diese Datensätze werden bei Auswertungen auf Kreisebene nicht berücksichtigt.
+Alle 500.799 Datensätze konnten einem Landkreis oder einer kreisfreien Stadt zugeordnet werden. Die 63 Unfälle mit dem Kreisschlüssel 16056 stammen aus der früher kreisfreien Stadt Eisenach, die seit dem 1. Juli 2021 zum Wartburgkreis (16063) gehört, und wurden diesem zugeordnet. Auf Gemeindeebene konnten 555 Unfälle (0,11 %) keiner Gemeinde zugeordnet werden, der größte Teil davon (464) wegen eines Gemeindeschlüssels im Main-Kinzig-Kreis, der im Verzeichnis von 2026 nicht mehr enthalten ist.
 
 ### Einwohnerzahlen
 
-Für die Berechnung von Unfallzahlen je 100.000 Einwohner werden die Einwohnerzahlen der Gemeinden aus dem Gemeindeverzeichnis des Statistischen Bundesamtes (GV-ISys, „Gemeinden in Deutschland nach Fläche, Bevölkerung und Postleitzahl“) mit Stand vom 31. Dezember verwendet.
+Für die Berechnung von Unfallzahlen je 100.000 Einwohner werden die Einwohnerzahlen der Gemeinden aus dem Gemeindeverzeichnis des Statistischen Bundesamtes (GV-ISys, „Gemeinden in Deutschland nach Fläche, Bevölkerung und Postleitzahl“) mit Stand vom 31. Dezember verwendet. Für jedes Jahr wird die Einwohnerzahl des jeweiligen Jahres herangezogen.
 
 Die Dateien für die Jahre 2020 bis 2025 liegen im Ordner `data/population/`:
 
@@ -81,7 +84,7 @@ Die Variable `schwer` wird während der Datenaufbereitung erstellt und in den na
 
 ## Methodik
 
-Die Analyse wird mit Python und den Bibliotheken pandas, Matplotlib sowie statsmodels für die lineare Regression durchgeführt. Die Auswertung erfolgt in einem Jupyter Notebook.
+Die Analyse wird mit Python und den Bibliotheken pandas, NumPy, Matplotlib, seaborn sowie statsmodels für die lineare Regression durchgeführt. Die Auswertung erfolgt in einem Jupyter Notebook.
 
 Die Arbeitsschritte umfassen:
 
@@ -92,10 +95,11 @@ Die Arbeitsschritte umfassen:
 - Untersuchung der Unfallschwere und der Unfallbedingungen
 - Analyse der Beteiligung weiterer Verkehrsteilnehmer
 - Erstellung und Bewertung einer explorativen Prognose für 2026
+- Zeitliche Aufschlüsselung der Prognose nach Monat, Wochentag und Uhrzeit
 
 Absolute Unfallzahlen und Anteile schwerer Unfälle beantworten unterschiedliche Fragen: Absolute Zahlen zeigen, wo viele Unfälle registriert werden; prozentuale Anteile beschreiben die Zusammensetzung der erfassten Unfälle.
 
-Für Städtevergleiche werden, sofern die Einwohnerzahlen vorliegen, zusätzlich Unfallzahlen je 100.000 Einwohner betrachtet. Diese Kennzahl berücksichtigt die Einwohnerzahl, ist aber keine direkte Messung des individuellen Fahrradrisikos, da beispielsweise die Zahl der Fahrradfahrten nicht berücksichtigt wird.
+Für den Vergleich der Bundesländer und der zehn einwohnerstärksten Städte werden zusätzlich Unfallzahlen je 100.000 Einwohner betrachtet. Die zehn größten Städte werden dabei für jedes Jahr neu bestimmt. Diese Kennzahl berücksichtigt die Einwohnerzahl, ist aber keine direkte Messung des individuellen Fahrradrisikos, da beispielsweise die Zahl der Fahrradfahrten nicht berücksichtigt wird.
 
 ## Ergebnisse
 
@@ -105,35 +109,46 @@ Die Analyse umfasst 500.799 Unfälle mit Fahrradbeteiligung aus den Jahren 2020 
 
 Die Zahl der Fahrradunfälle stieg von 78.187 im Jahr 2020 auf 89.521 im Jahr 2025 (rund +14,5 %). Der niedrigste Wert lag 2021 bei 77.316. Der Anteil der Fahrradunfälle an allen Unfällen mit Personenschaden blieb mit 32,0 bis 32,9 % nahezu konstant.
 
-Die meisten Fahrradunfälle wurden im Juni (64.150), Juli (59.907) und September (57.613) registriert. Die höchsten Fallzahlen nach Tageszeit traten am Nachmittag auf (16 Uhr: 47.107; 15 Uhr: 45.561; 17 Uhr: 43.846). Von Dienstag bis Donnerstag wurden mit jeweils rund 81.000 Unfällen die meisten Unfälle registriert; am Wochenende waren es deutlich weniger (Samstag: 58.520, Sonntag: 46.759).
+Die meisten Fahrradunfälle wurden im Juni (64.150), Juli (59.907) und September (57.613) registriert; auf Mai bis September entfallen zusammen rund 59 %. Die höchsten Fallzahlen nach Tageszeit traten am Nachmittag auf (16 Uhr: 47.107; 15 Uhr: 45.561; 17 Uhr: 43.846), ein zweiter Gipfel liegt um 7 Uhr morgens. Von Dienstag bis Donnerstag wurden mit jeweils rund 81.000 Unfällen die meisten Unfälle registriert; am Wochenende waren es deutlich weniger (Samstag: 58.520, Sonntag: 46.759).
 
 ### Räumliche Verteilung
 
 Die meisten Fahrradunfälle wurden in Nordrhein-Westfalen (109.796), Bayern (95.069) und Baden-Württemberg (58.337) registriert. Zusammen entfallen rund 53 % aller erfassten Unfälle auf diese drei Bundesländer.
 
+Bezogen auf die Einwohnerzahl ergibt sich ein anderes Bild: Die meisten Fahrradunfälle pro 100.000 Einwohner und Jahr verzeichnen Hamburg (148,2), Schleswig-Holstein (147,5) und Bremen (146,7), die wenigsten das Saarland (52,2) und Thüringen (56,9).
+
 Auf Ebene der Gemeinden liegen Berlin (27.751), Hamburg (16.655), München (14.244) und Köln (11.108) vorn. Die zehn Gemeinden mit den meisten Fahrradunfällen vereinen rund 21 % aller Unfälle. Diese absoluten Zahlen spiegeln auch Unterschiede bei Einwohnerzahl, Verkehrsaufkommen und Fahrradnutzung wider.
 
-Der Anteil schwerer Fahrradunfälle liegt bundesweit bei 16,8 %. Am höchsten ist er im Saarland (22,6 %), in Thüringen (22,3 %) und in Sachsen (21,1 %), am niedrigsten in Hamburg (8,9 %), Bremen (11,5 %) und Berlin (12,8 %). Zwischen 2020 und 2025 sank der Anteil in allen 16 Bundesländern. In den zehn einwohnerstärksten Städten lagen die schweren Fahrradunfälle je 100.000 Einwohner im Jahr 2025 zwischen 7,2 (Dortmund) und 18,5 (Köln).
+Der Anteil schwerer Fahrradunfälle liegt bundesweit bei 16,8 %. Am höchsten ist er im Saarland (22,6 %), in Thüringen (22,3 %) und in Sachsen (21,1 %), am niedrigsten in Hamburg (8,9 %), Bremen (11,5 %) und Berlin (12,8 %). Die Länder mit vielen Unfällen je Einwohner haben also eher niedrige Anteile schwerer Unfälle und umgekehrt. Zwischen 2020 und 2025 sank der Anteil in allen 16 Bundesländern. In den zehn einwohnerstärksten Städten lagen die schweren Fahrradunfälle je 100.000 Einwohner im Jahr 2025 zwischen 7,2 (Dortmund) und 18,5 (Köln); den stärksten Rückgang seit 2020 verzeichnete Köln (von 24,6 auf 18,5).
 
 ### Unfallschwere und Unfallbedingungen
 
-Der Anteil schwerer Fahrradunfälle lag bei Dunkelheit bei 18,7 %, bei Tageslicht bei 16,6 % und in der Dämmerung bei 15,2 %. Dies zeigt einen Zusammenhang zwischen Lichtverhältnissen und Unfallschwere, belegt jedoch keine Ursache-Wirkungs-Beziehung.
+Die meisten schweren Fahrradunfälle ereigneten sich um 16 Uhr. Der Anteil schwerer Unfälle war dagegen nachts am höchsten (um 1 Uhr rund 26 %) und um 7 Uhr morgens am niedrigsten (rund 11,4 %). Bei Dunkelheit lag er bei 18,7 %, bei Tageslicht bei 16,6 % und in der Dämmerung bei 15,2 %. Dies zeigt einen Zusammenhang zwischen Tageszeit, Lichtverhältnissen und Unfallschwere, belegt jedoch keine Ursache-Wirkungs-Beziehung.
 
 Die meisten Unfälle ereigneten sich auf trockenen Straßen (81,9 %), gefolgt von nassen oder schlüpfrigen Straßen (17,0 %) und winterglatten Straßen (1,0 %).
 
-Der häufigste Unfalltyp war der Einbiegen-/Kreuzen-Unfall (29,8 %), gefolgt vom Fahrunfall (19,6 %) und sonstigen Unfällen (16,3 %). Die Häufigkeiten beschreiben die registrierten Unfälle, erlauben aber keine direkten Rückschlüsse auf das Risiko unter den jeweiligen Bedingungen.
+Der häufigste Unfalltyp war der Einbiegen-/Kreuzen-Unfall (29,8 %), gefolgt vom Fahrunfall (19,6 %) und sonstigen Unfällen (16,3 %). An 52,0 % der Fahrradunfälle war ein Pkw beteiligt; 35,7 % waren reine Fahrradunfälle ohne weitere erfasste Beteiligte. Die Häufigkeiten beschreiben die registrierten Unfälle, erlauben aber keine direkten Rückschlüsse auf das Risiko unter den jeweiligen Bedingungen.
 
 ### Prognose für 2026
 
-Für die zehn einwohnerstärksten Städte wurde je Stadt ein linearer Trend aus den Jahren 2020 bis 2025 fortgeschrieben. Die Summe der Prognosen für 2026 beträgt rund 16.700 Unfälle. Die höchsten prognostizierten Werte ergeben sich für Berlin (4.483), Hamburg (3.053) und München (2.487). Bei den schweren Unfällen liegen die Prognosen für Berlin (512), Hamburg (243) und München (192) am höchsten.
+Für die zehn einwohnerstärksten Städte (Stand 2025) wurde je Stadt ein linearer Trend aus den Jahren 2020 bis 2025 fortgeschrieben. Die Summe der Prognosen für 2026 beträgt rund 16.700 Unfälle. Die höchsten prognostizierten Werte ergeben sich für Berlin (4.483), Hamburg (3.053) und München (2.487). Bei den schweren Unfällen liegen die Prognosen für Berlin (512), Hamburg (243) und München (192) am höchsten.
 
-Die zeitliche Verteilung nach Monat, Wochentag und Uhrzeit wurde anhand der Anteile aus den Jahren 2020 bis 2025 auf die Jahresprognose übertragen. Die Prognose beruht auf nur sechs Jahreswerten je Stadt. Das Bestimmtheitsmaß R² beschreibt, wie gut die Gerade zu den bisherigen Daten passt, nicht die Genauigkeit der Vorhersage. Wetter, Veranstaltungen und verkehrspolitische Änderungen werden nicht gesondert berücksichtigt. Da Daten zur Zahl der Radfahrenden fehlen, beschreibt die Prognose die erwartete Unfallhäufigkeit, nicht das persönliche Unfallrisiko.
+Das Bestimmtheitsmaß R² beschreibt, wie gut die Gerade zu den bisherigen Daten passt, nicht die Genauigkeit der Vorhersage. Es schwankt stark zwischen den Städten, z. B. Berlin, alle Unfälle: 0,07; München, schwere Unfälle: 0,92.
+
+### Zeitliche Verteilung der Prognose
+
+Die Jahresprognose wurde anhand der Anteile aus den Jahren 2020 bis 2025 auf Monate, Wochentage und Uhrzeiten verteilt. In neun von zehn Städten ist der Juni der unfallreichste Monat (München: Juli). Die meisten Unfälle sind an einem Dienstag oder Mittwoch und am Nachmittag zwischen 14 und 18 Uhr zu erwarten, in fünf Städten mit der Spitze um 16 Uhr. Diese Verteilung schreibt die bisherigen Muster fort und ist keine eigenständige Prognose zeitlicher Veränderungen.
 
 ## Fazit
 
-Die Analyse zeigt zeitliche und regionale Unterschiede bei den registrierten Fahrradunfällen. Besonders viele Unfälle wurden in den Sommermonaten und am Nachmittag erfasst; zugleich unterscheidet sich der Anteil schwerer Unfälle zwischen den Regionen.
+1. **Zeitliche Entwicklung:** Fahrradunfälle nehmen zu, aber nicht stärker als die übrigen Unfälle mit Personenschaden. Sie folgen klaren Mustern: Sommer, Werktage und Berufsverkehr.
+2. **Räumliche Verteilung:** Pro Einwohner passieren die meisten Fahrradunfälle in den Stadtstaaten und in Schleswig-Holstein. Schwer enden Unfälle dagegen häufiger in Flächenländern wie dem Saarland und Thüringen. Der Anteil schwerer Unfälle ist in allen Bundesländern gesunken.
+3. **Unfallschwere:** Tagsüber passieren mehr Unfälle, nachts und bei Dunkelheit enden sie häufiger schwer.
+4. **Unfallbedingungen:** Einbiegen und Kreuzen sowie die Beteiligung von Pkw prägen das Unfallgeschehen. Die Schnittstelle zwischen Rad- und Autoverkehr ist ein zentraler Ansatzpunkt für die Verkehrssicherheit.
+5. **Prognose:** Für 2026 werden die höchsten Unfallzahlen für Berlin, Hamburg und München erwartet. Aufgrund der kurzen Zeitreihe ist die Prognose eine grobe Orientierung, keine sichere Vorhersage.
+6. **Zeitliche Verteilung der Prognose:** Die meisten Unfälle sind 2026 im Juni, an einem Dienstag oder Mittwoch und am Nachmittag zu erwarten. Die Verteilung schreibt die Muster aus 2020–2025 fort.
 
-Die Prognose für 2026 ist eine explorative Schätzung und aufgrund der kurzen Zeitreihe mit Unsicherheit verbunden. Insgesamt beschreiben die Ergebnisse Muster in den registrierten Unfällen, erlauben aber weder direkte Aussagen über das individuelle Unfallrisiko noch sichere Schlussfolgerungen über Unfallursachen.
+Insgesamt beschreiben die Ergebnisse Muster in den registrierten Unfällen, erlauben aber weder direkte Aussagen über das individuelle Unfallrisiko noch sichere Schlussfolgerungen über Unfallursachen.
 
 ## Installation
 
@@ -178,12 +193,12 @@ Unfallorte_Projekt/
 │   │   ├── 31122023_Auszug_GV.xlsx
 │   │   ├── 31122024_Auszug_GV.xlsx
 │   │   └── 31122025_Auszug_GV.xlsx
-│   ├── Unfallorte2020_LinRef.csv
-│   ├── Unfallorte_2021_LinRef.txt
-│   ├── Unfallorte2022_LinRef.csv
-│   ├── Unfallorte2023_LinRef.csv
-│   ├── Unfallorte2024_LinRef.csv
-│   ├── Unfallorte_2025_LR_BasisDLM.csv
+│   ├── Unfallorte2020_LinRef.csv               # nicht versioniert
+│   ├── Unfallorte_2021_LinRef.txt              # nicht versioniert
+│   ├── Unfallorte2022_LinRef.csv               # nicht versioniert
+│   ├── Unfallorte2023_LinRef.csv               # nicht versioniert
+│   ├── Unfallorte2024_LinRef.csv               # nicht versioniert
+│   ├── Unfallorte_2025_LR_BasisDLM.csv         # nicht versioniert
 │   └── 20260131_Anschriften_der_Gemeinde_und_Stadtverwaltungen.xlsx
 ├── analyse.ipynb
 ├── pyproject.toml
@@ -199,17 +214,23 @@ Die jährlichen Unfalldateien werden lokal im Ordner `data/` abgelegt und nicht 
 - Der Unfallatlas enthält Unfälle mit Personenschaden, nicht alle Verkehrsunfälle.
 - Die Unfallkategorie richtet sich nach der schwersten Folge aller Beteiligten, nicht nur der Radfahrenden.
 - Die absolute Zahl registrierter Unfälle entspricht nicht dem individuellen Unfallrisiko. Einwohnerbezogene Kennzahlen berücksichtigen nicht, wie häufig oder wie weit Rad gefahren wird.
+- Unfälle werden am Unfallort gezählt, auch wenn die Beteiligten anderswo wohnen. In Städten mit vielen Pendlern fallen einwohnerbezogene Kennzahlen deshalb tendenziell höher aus.
 - Die Einwohnerzahlen beruhen bis 2023 und ab 2024 auf unterschiedlichen Grundlagen (ab 2024 Zensus 2022). Kennzahlen je 100.000 Einwohner sind über diese Grenze hinweg nur eingeschränkt vergleichbar.
+- Die zehn einwohnerstärksten Städte ändern sich zwischen den Jahren (Bremen nur 2024–2025, Essen nur 2020–2023). Nicht alle Städte sind daher über den gesamten Zeitraum vergleichbar.
+- Die Jahre 2020 und 2021 waren durch die COVID-19-Pandemie geprägt, was Verkehrsaufkommen und Unfallzahlen beeinflusst haben kann.
 - Die Beteiligung weiterer Verkehrsteilnehmer kann sich zwischen den Kategorien überschneiden.
-- Berlin und Hamburg sind in den Unfalldaten in Bezirke unterteilt und wurden für die Stadtvergleiche jeweils zusammengefasst. Insgesamt konnten 618 Unfälle (0,12 %) keiner Gemeinde zugeordnet werden.
+- Berlin und Hamburg sind in den Unfalldaten in Bezirke unterteilt und wurden für die Stadtvergleiche jeweils zusammengefasst.
 - Die Ergebnisse beschreiben beobachtete Zusammenhänge und belegen keine Kausalität.
-- Die Prognose für 2026 ist vorläufig und mit erheblicher Unsicherheit verbunden.
+- Die Prognose beruht auf nur sechs Jahreswerten je Stadt und berücksichtigt weder Wetter noch Ferien, Baustellen oder Veränderungen der Infrastruktur. Sie ist vorläufig und mit erheblicher Unsicherheit verbunden.
 
 ## Verwendete Technologien
 
 - Python
 - pandas
+- NumPy
 - Matplotlib
+- seaborn
 - statsmodels
+- openpyxl
 - Jupyter Notebook
 - uv
